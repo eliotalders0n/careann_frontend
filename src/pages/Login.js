@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container } from "react-bootstrap";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,7 +32,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -52,7 +53,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-    </div>
+    </Container>
   );
 };
 
