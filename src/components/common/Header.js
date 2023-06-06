@@ -1,12 +1,20 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Header(props) {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const destroySession = () => {
+    localStorage.removeItem("user");
+    return navigate("/"); // navigate to dashboard
+  };
+
   return (
-    <div className="container">
+    <Container fluid>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Container>
+        <Container fluid>
           <Navbar.Brand>
             <Link to="/" style={myComponentStyles}>
               Care<span style={{ color: "lightgreen" }}>Ann</span>
@@ -33,21 +41,43 @@ function Header(props) {
                   Contact
                 </Link>
               </Nav.Link>
-              <Nav.Link className="nav-link mx-1">
-                <Link to="/login" style={myComponentStyles}>
-                  Login
-                </Link>
-              </Nav.Link>
-              <Nav.Link className="nav-link mx-1">
-                <Link to="/register" style={myComponentStyles}>
-                  Signup
-                </Link>
-              </Nav.Link>
+              {user && user ? (
+                <Nav>
+                  <Nav.Link className="nav-link mx-1">
+                    <Link style={myComponentStyles}>
+                      <Badge variant="info">Logged in</Badge>
+                    </Link>
+                  </Nav.Link>
+                  <Nav.Link className="nav-link mx-1">
+                    <Link to="/userDashboard" style={myComponentStyles}>
+                      <p className="lead">{user.firstName}</p>
+                    </Link>
+                  </Nav.Link>
+                  <Nav.Link className="nav-link mx-1">
+                    <Button  size="sm" variant="outline-dark" onClick={destroySession}>
+                      Logout
+                    </Button>
+                  </Nav.Link>
+                </Nav>
+              ) : (
+                <Nav>
+                  <Nav.Link className="nav-link mx-1">
+                    <Link to="/login" style={myComponentStyles}>
+                      Login
+                    </Link>
+                  </Nav.Link>
+                  <Nav.Link className="nav-link mx-1">
+                    <Link to="/register" style={myComponentStyles}>
+                      Signup
+                    </Link>
+                  </Nav.Link>
+                </Nav>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </div>
+    </Container>
   );
 }
 

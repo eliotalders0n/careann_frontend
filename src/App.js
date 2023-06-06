@@ -13,6 +13,9 @@ import Search from "./pages/Search";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Aboutus from "./pages/Aboutus";
+import UserDashboard from "./components/user/UserDashboard";
+import UserAppointment from "./components/user/UserAppointment";
+import UserSearch from "./components/user/UserSearch";
 
 function App() {
   var id = "g4ic79bnef";
@@ -35,6 +38,11 @@ function App() {
           <Route path="/payement" element={<Payement />} />
           <Route path="/search" element={<Search />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/aboutus" element={<Aboutus />} />
+          {/* user routes */}
+          <Route path="/userDashboard" element={<UserDashboard />} />
+          <Route path="/userAppointment" element={<UserAppointment />} />
+          <Route path="/userSearch" element={<UserSearch />} />
           <Route path="/aboutus" element={<Aboutus />} />
         </Routes>
       </Router>
