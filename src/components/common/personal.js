@@ -8,7 +8,8 @@ const updateUser = async (data) => {
   try {
 
     const response = await axios.put(
-      `http://localhost:5002/api/users/update/${user._id}`,
+        `https://young-earth-39894.herokuapp.com/api/users/update/${user._id}`,
+    //   `http://localhost:5002/api/users/update/${user._id}`,
       data
     );
     console.log(response);

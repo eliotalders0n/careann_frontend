@@ -19,8 +19,8 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        // "https://young-earth-39894.herokuapp.com/api/users/create",
-        "http://localhost:5002/api/users/create",
+        "https://young-earth-39894.herokuapp.com/api/users/create",
+        // "http://localhost:5002/api/users/create",
         {
           method: "POST",
           headers: {
