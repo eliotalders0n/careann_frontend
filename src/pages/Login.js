@@ -1,45 +1,34 @@
 import React, { useState } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import Header from "../components/common/Header";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import firebase from "./../firebase.js";
 
 const Login = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [loggedin, setLoggedin] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const response = await fetch(
-        "https://young-earth-39894.herokuapp.com/api/users/login",
-        // "http://localhost:5002/api/users/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      if (response.ok) {
-        // User login successful
-        const data = await response.json();
-        // console.log("user : " , data.user); // Do something with the response data
-        localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("session : " + localStorage.getItem("user"));
-        navigate('/search');
-      } else {
-        // User login failed
-        const errorData = await response.json();
-        console.log(errorData); // Do something with the error response data
-      }
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      console.log("Successfully logged in!");
+      alert("User Login successful");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error logging in: ", error);
     }
   };
+
+  // if (loggedin) {
+  //   alert("User registration successful");
+  //   return <Navigate to="/search" />; // navigate to dashboard
+  //   // navigate('/search'); // navigate to dashboard
+  // }
+  //   "https://young-earth-39894.herokuapp.com/api/users/login",
+  //   // "http://localhost:5002/api/users/login",
 
   return (
     <Container>
@@ -59,7 +48,7 @@ const Login = () => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} controlId="lastName">
+          <Form.Group as={Col} controlId="current-password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"

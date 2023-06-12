@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Button, Card, Form, Row, Badge } from "react-bootstrap";
 import axios from "axios";
+import firebase from "./../../firebase.js";
 
-const user = JSON.parse(localStorage.getItem("user"));
-console.log(user.firstName);
-const updateUser = async (data) => {
+const updateUser = async (data, userID) => {
   try {
-
     const response = await axios.put(
-        `https://young-earth-39894.herokuapp.com/api/users/update/${user._id}`,
-    //   `http://localhost:5002/api/users/update/${user._id}`,
+      `http://localhost:5002/api/users/update/${userID}`, // Replace with your API endpoint URL
       data
     );
-    console.log(response);
+    console.log("the response" + response);
     return response.data;
   } catch (error) {
     throw new Error("Internal server error");
@@ -20,9 +17,30 @@ const updateUser = async (data) => {
 };
 
 function Personal(props) {
-  const [userData, setUserData] = useState(user);
+  const [userData, setUserData] = useState({});
   const [updatedUser, setUpdatedUser] = useState(null);
   const [error, setError] = useState(null);
+  const currentUser = firebase.auth().currentUser;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        
+        if (currentUser) {
+          const userId = currentUser.uid;
+          const response = await fetch(
+            `http://localhost:5002/api/users/${userId}`
+          );
+          const data = await response.json();
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleInputChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -31,10 +49,12 @@ function Personal(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await updateUser(userData);
-      setUpdatedUser(response);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setError(null);
+      if (currentUser) {
+        const userId = currentUser.uid;
+        const response = await updateUser(userData, userId);
+        setUpdatedUser(response);
+        setError(null);
+      }
     } catch (error) {
       setUpdatedUser(null);
       setError(error.message);
@@ -50,7 +70,9 @@ function Personal(props) {
           {updatedUser && (
             <div>
               <h3>Status</h3>
-              <pre><Badge variant="info">Updated</Badge></pre>
+              <pre>
+                <Badge variant="info">Updated</Badge>
+              </pre>
             </div>
           )}
           <Form onSubmit={handleSubmit}>
@@ -87,7 +109,7 @@ function Personal(props) {
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridPassword">
+              {/* <Form.Group as={Col} controlId="formGridPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="text"
@@ -95,7 +117,7 @@ function Personal(props) {
                   value={userData.password || ""}
                   onChange={handleInputChange}
                 />
-              </Form.Group>
+              </Form.Group> */}
             </Row>
 
             <Form.Group className="mb-3" controlId="formGridAddress1">
@@ -142,10 +164,6 @@ function Personal(props) {
                 />
               </Form.Group>
             </Row>
-
-            <Form.Group className="mb-3" id="formGridCheckbox">
-              <Form.Check type="checkbox" label="I am ready" />
-            </Form.Group>
 
             <Button variant="primary" type="submit">
               Update

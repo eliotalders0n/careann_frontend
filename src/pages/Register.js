@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import firebase from "./../firebase.js";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [register, setRegister] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,35 +19,50 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch(
-        "https://young-earth-39894.herokuapp.com/api/users/create",
-        // "http://localhost:5002/api/users/create",
+      // Create user in Firebase
+      const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+  
+      // Get the UID of the created user
+      const uid = user.uid;
+  
+      // Save the UID to MongoDB
+       await axios.post(
+        // "https://young-earth-39894.herokuapp.com/api/users/create",
+        "http://localhost:5002/api/users/create",
         {
-          method: "POST",
+          firstName,
+          lastName,
+          email,
+          password,
+          phone,
+          address,
+          age,
+          gender,
+          fid: uid // Assign the UID as the fid field in MongoDB
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ firstName, lastName, email, password, phone, address, age, gender }),
         }
       );
-
-      if (response.ok) {
-        // User registration successful
-        const data = await response.json();
-        console.log(data); // Do something with the response data
-        alert("User registration successful");
-        navigate('/login');
-      } else {
-        // User registration failed
-        const errorData = await response.json();
-        console.log(errorData); // Do something with the error response data
-      }
+      setRegister(true)
+      navigate('/register');
     } catch (error) {
       console.error("Error:", error);
     }
+
+    // if (register) {
+    //   // User registration successful
+    //   alert("User registration successful");
+      
+    // }
   };
+
+
+  
 
   return (
     <Container fluid>
@@ -140,7 +158,7 @@ const Register = () => {
           </Row>
 
           <Form.Group className="mb-3" id="formGridCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
+            <Form.Check type="checkbox" label="Agree to terms and condition" />
           </Form.Group>
 
           <Button variant="primary" type="submit">
