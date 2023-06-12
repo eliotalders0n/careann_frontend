@@ -12,7 +12,8 @@ function Header(props) {
     const unsubscribe = firebase.auth().onAuthStateChanged((currentUser) => {
       if (currentUser) {
         const user_id = currentUser.uid;
-        fetch(`http://localhost:5002/api/users/${user_id}`)
+        // fetch(`http://localhost:5002/api/users/${user_id}`)
+        fetch(`https://young-earth-39894.herokuapp.com/api/users/${user_id}`)
           .then(response => response.json())
           .then(data => {
             setUser(data);

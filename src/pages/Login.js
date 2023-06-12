@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import Header from "../components/common/Header";
-// import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import firebase from "./../firebase.js";
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [loggedin, setLoggedin] = useState(false);
@@ -17,6 +17,7 @@ const Login = () => {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       console.log("Successfully logged in!");
       alert("User Login successful");
+      navigate('/search'); // navigate to dashboard
     } catch (error) {
       console.error("Error logging in: ", error);
     }

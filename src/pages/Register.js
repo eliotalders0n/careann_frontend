@@ -7,7 +7,7 @@ import firebase from "./../firebase.js";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [register, setRegister] = useState(false);
+  // const [register, setRegister] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,8 +29,8 @@ const Register = () => {
   
       // Save the UID to MongoDB
        await axios.post(
-        // "https://young-earth-39894.herokuapp.com/api/users/create",
-        "http://localhost:5002/api/users/create",
+        "https://young-earth-39894.herokuapp.com/api/users/create",
+        // "http://localhost:5002/api/users/create",
         {
           firstName,
           lastName,
@@ -48,7 +48,7 @@ const Register = () => {
           },
         }
       );
-      setRegister(true)
+      // setRegister(true)
       navigate('/register');
     } catch (error) {
       console.error("Error:", error);

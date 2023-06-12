@@ -6,7 +6,8 @@ import firebase from "./../../firebase.js";
 const updateUser = async (data, userID) => {
   try {
     const response = await axios.put(
-      `http://localhost:5002/api/users/update/${userID}`, // Replace with your API endpoint URL
+      `https://young-earth-39894.herokuapp.com/api/users/update/${userID}`, // Replace with your API endpoint URL
+      // `http://localhost:5002/api/users/update/${userID}`, // Replace with your API endpoint URL
       data
     );
     console.log("the response" + response);
@@ -29,7 +30,8 @@ function Personal(props) {
         if (currentUser) {
           const userId = currentUser.uid;
           const response = await fetch(
-            `http://localhost:5002/api/users/${userId}`
+            `https://young-earth-39894.herokuapp.com/api/users/${userId}`
+            // `http://localhost:5002/api/users/${userId}`
           );
           const data = await response.json();
           setUserData(data);
