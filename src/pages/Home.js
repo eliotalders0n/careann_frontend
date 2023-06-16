@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel } from "react-bootstrap";
+import { Button, Carousel } from "react-bootstrap";
 import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
 
@@ -12,10 +12,12 @@ function Home(props) {
           className="card text-center col-md-8"
           style={{ border: "none", padding: "10px" }}
         >
-          <div className="card-header bg-light my-3 display-5">
+          <div className="card-header bg-light my-2 display-5">
             Get started find a Caregiver
           </div>
           <div className="card-body my-3">
+            <a href="/search"><Button variant="dark">Search Now</Button></a>
+            <br/><br/>
             <h3 className="card-title">
               Good <span style={{ color: "lightgreen" }}>Health</span> is Wealth
             </h3>

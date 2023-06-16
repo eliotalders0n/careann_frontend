@@ -6,8 +6,8 @@ import firebase from "./../../firebase.js";
 const updateUser = async (data, userID) => {
   try {
     const response = await axios.put(
-      // `https://young-earth-39894.herokuapp.com/api/users/update/${userID}`, // Replace with your API endpoint URL
-      `http://localhost:5002/api/users/update/${userID}`, // Replace with your API endpoint URL
+      `https://young-earth-39894.herokuapp.com/api/users/update/${userID}`, // Replace with your API endpoint URL
+      // `http://localhost:5002/api/users/update/${userID}`, // Replace with your API endpoint URL
       data
     );
     console.log("the response" + response);
@@ -32,8 +32,8 @@ function Personal(props) {
         if (currentUser) {
           const userId = currentUser.uid;
           const response = await fetch(
-            // `https://young-earth-39894.herokuapp.com/api/users/${userId}`
-            `http://localhost:5002/api/users/${userId}`
+            `https://young-earth-39894.herokuapp.com/api/users/${userId}`
+            // `http://localhost:5002/api/users/${userId}`
           );
           const data = await response.json();
           setUserData(data);
@@ -271,7 +271,7 @@ function Personal(props) {
                       about {care.frequency} days/month
                       <br />
                       Preferred Care Type: {care.type_of_care}
-                      <br />
+                      <br /><br />
                       Support Goal: To ensure{" "}
                       <span style={{ fontWeight: 600 }}>
                         {userData.firstName} {userData.lastName}
@@ -280,7 +280,7 @@ function Personal(props) {
                       <span style={{ fontWeight: 600 }}>
                         {care.type_of_care}
                       </span>{" "}
-                      as prescribed and assist her{" "}
+                      as prescribed and assist them{" "}
                       <span style={{ fontWeight: 600 }}>
                         {care.frequency} times
                       </span>{" "}
@@ -456,6 +456,7 @@ function Personal(props) {
                         Allergies: {health.allergies}
                         <br />
                         Disability: {health.disability}
+                        <br />
                         <br />
                         <br />
                         Summary:{" "}
@@ -669,7 +670,7 @@ function Personal(props) {
                     onChange={handleInputChange}
                     name="gender"
                   >
-                    <option value="">Choose...</option>
+                    <option value="">{userData.gender || ""}</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </Form.Select>
